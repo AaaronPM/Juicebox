@@ -7,9 +7,11 @@ postsRouter.use((req,res,next)=>{
     next();
 })
 
-postsRouter.get('/posts',async(req,res,next)=>{
+postsRouter.get('/',async(req,res,next)=>{
     const posts = await getAllPosts();
-    console.log(posts)
+    // console.log('xxxxxxx')
+    // console.log(posts)
+    // console.log('zzzzzzzzz')
     res.send({
         posts
     });

@@ -104,6 +104,9 @@ async function getAllPosts() {
       SELECT *
       FROM posts
     `);
+    console.log('xxxx')
+    console.log(rows)
+    console.log('zzz')
     return rows
   } catch (error) {
     throw error;
