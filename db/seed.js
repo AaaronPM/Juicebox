@@ -149,12 +149,11 @@ async function createTables() {
 async function rebuildDB() {
   try {
     client.connect();
-
     await dropTables();
     await createTables();
     await createInitialUsers();
     await createInitialPosts();
-    await createInitialTags();
+    // await createInitialTags();
   } catch (error) {
     console.log('error during rebuild DB')
     throw error;
@@ -186,6 +185,7 @@ async function testDB() {
       content: "updated content"
     });
     console.log('Result: ', updatePostResult)
+
 
     console.log('calling getUserById with 1')
     const albert = await getUserById(1);

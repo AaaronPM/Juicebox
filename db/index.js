@@ -1,4 +1,5 @@
 const { Client } = require('pg');
+const { rows } = require('pg/lib/defaults');
 
 const client = new Client('postgres://localhost:5432/juicebox-dev');
 
@@ -179,7 +180,7 @@ async function createTags(tagList) {
   if (tagList.length === 0) {
     return;
   }
-
+ 
   // need something like: $1), ($2), ($3 
   const insertValues = tagList.map(
     (_, index) => `$${index + 1}`).join('), (');
@@ -191,25 +192,25 @@ async function createTags(tagList) {
   // then we can use (${ selectValues }) in our string template
 
   try {
-    await client.query(`
+      const {rows:[tags]}=await client.query(`
       INSERT INTO tags(name)
-      VALUES ($1), ($2), ($3)
+      VALUES (${insertValues})
       ON CONFLICT (name) DO NOTHING;
 
       SELECT * FROM tags
       WHERE name
-      IN ($1, $2, $3);
+      IN (${selectValues});
     `)
     // insert the tags, doing nothing on conflict
     // returning nothing, we'll query after
 
     // select all tags where the name is in our taglist
     // return the rows from the query
-    return insertValues
-    return selectValues
+    return tags
   } catch (error) {
     throw error;
   }
+  
 }
 
 async function createPostTag(postId, tagId) {
@@ -244,6 +245,7 @@ module.exports = {
   getAllUsers,
   createUser,
   updateUser,
+  getAllUsers,
   createPost,
   updatePost,
   getAllPosts,
