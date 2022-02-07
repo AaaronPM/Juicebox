@@ -278,6 +278,18 @@ async function addTagsToPost(postId, tagList) {
   }
 }
 
+async function getAllTags(tags) {
+  try {
+    const {rows:tags} = await client.query(`
+      SELECT * 
+      FROM tags
+    `)
+    return tags
+  } catch (error) {
+    throw error
+  }
+}
+
 // and export them
 module.exports = {
   client,
@@ -292,7 +304,8 @@ module.exports = {
   getPostById,
   createTags,
   createPostTag,
-  addTagsToPost
+  addTagsToPost,
+  getAllTags
 }
 
 
